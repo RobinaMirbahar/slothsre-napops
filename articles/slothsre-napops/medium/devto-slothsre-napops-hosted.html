@@ -189,7 +189,7 @@
 <p><em>This is a submission for the <a
 href="https://dev.to/challenges/hacktoberfest-week3-2026-10-19">Hacktoberfest
 Open-Source AI Challenge Week 3: Slow and Steady</a></em></p>
-<figure><img src="https://raw.githubusercontent.com/RobinaMirbahar/streamforge-event-adk/main/articles/slothsre-napops/medium/img/cover.1eb32148.jpg" alt="SlothSRE (NapOps): An Overnight Gemma 4 &amp; ADK Agent That Compresses 418 Lines of 3 AM Alerts into a 2-Line Morning Digest" /></figure>
+<figure><img src="https://raw.githubusercontent.com/RobinaMirbahar/slothsre-napops/main/articles/slothsre-napops/medium/img/cover.1eb32148.jpg" alt="SlothSRE (NapOps): An Overnight Gemma 4 &amp; ADK Agent That Compresses 418 Lines of 3 AM Alerts into a 2-Line Morning Digest" /></figure>
 <h4 id="what-i-built">What I Built</h4>
 <p>On-call software engineers lose sleep to noisy alert floods that
 repeat the same failure dozens of times before sunrise. When a Redis
@@ -212,9 +212,9 @@ incident clusters (4 total summary lines), achieving a 99.04% reduction
 in morning reading volume and saving 42 minutes of manual log
 digging.</p>
 <p><img
-src="https://raw.githubusercontent.com/RobinaMirbahar/streamforge-event-adk/main/articles/slothsre-napops/slothsre_napops_arch.jpg"
+src="https://raw.githubusercontent.com/RobinaMirbahar/slothsre-napops/main/articles/slothsre-napops/slothsre_napops_arch.jpg"
 alt="SlothSRE NapOps Architecture with Open-Weights Gemma 4, Google ADK, and Sentry Agent Tracing" /></p>
-<p><img src="https://raw.githubusercontent.com/RobinaMirbahar/streamforge-event-adk/main/articles/slothsre-napops/medium/img/devto-slothsre-napops-table-1.png"
+<p><img src="https://raw.githubusercontent.com/RobinaMirbahar/slothsre-napops/main/articles/slothsre-napops/medium/img/devto-slothsre-napops-table-1.png"
 alt="Table: Overnight Metric, Manual 3 AM Triage, SlothSRE (NapOps) with Gemma 4" /></p>
 <h4 id="demo">Demo</h4>
 <p>You can run the complete SlothSRE benchmark and launch the
@@ -253,7 +253,7 @@ approval buttons directly:</p>
 <h4 id="code">Code</h4>
 <p>The full open-source implementation is available on GitHub in the
 <code>slothsre_napops/</code> package of <a
-href="https://github.com/RobinaMirbahar/streamforge-event-adk">RobinaMirbahar/streamforge-event-adk</a>:</p>
+href="https://github.com/RobinaMirbahar/slothsre-napops">RobinaMirbahar/slothsre-napops</a>:</p>
 <ul>
 <li><code>slothsre_napops/schemas.py</code>: Strict Pydantic v2
 contracts (<code>RawOvernightEvent</code>,
@@ -387,7 +387,7 @@ in a Sentry span with <code>gen_ai.system</code>,
 <code>gen_ai.request.model</code>,
 <code>gen_ai.usage.input_tokens</code>, and
 <code>gen_ai.usage.output_tokens</code>:</p>
-<p><img src="https://raw.githubusercontent.com/RobinaMirbahar/streamforge-event-adk/main/articles/slothsre-napops/medium/img/devto-slothsre-napops-table-2.png"
+<p><img src="https://raw.githubusercontent.com/RobinaMirbahar/slothsre-napops/main/articles/slothsre-napops/medium/img/devto-slothsre-napops-table-2.png"
 alt="Table: Span ID, Sentry Op, Agent / Tool Step, Input / Output Tokens, Duration (ms)" /></p>
 <h4 id="why-does-open-innovation-matter">Why Does Open Innovation
 Matter?</h4>
