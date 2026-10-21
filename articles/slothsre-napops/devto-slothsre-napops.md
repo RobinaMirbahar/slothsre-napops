@@ -191,3 +191,15 @@ With SlothSRE running on open-weights Gemma 4, those 96 noisy alerts are already
 
 - **Best Use of Gemma**: Uses open-weights **Gemma 4 (`google/gemma-4-27b-it`)** via local Ollama / vLLM as the reasoning engine across all three Google ADK sub-agents (`NoiseFilterAgent`, `SandboxPatchAgent`, and `TwoLineBriefAgent`).
 - **Best Use of Sentry Agent Tracing**: Instruments every overnight agent step and sandbox tool call with `sentry-sdk` `gen_ai.agent` and `gen_ai.tool` spans (`gen_ai.system`, `gen_ai.request.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`) and surfaces the trace table directly in the morning dashboard.
+
+## Official Documentation & Resources
+
+- **SlothSRE (NapOps) Open-Source Repository on GitHub:** [https://github.com/RobinaMirbahar/slothsre-napops](https://github.com/RobinaMirbahar/slothsre-napops)
+- **SlothSRE (NapOps) Core Package (`slothsre_napops/`):** [https://github.com/RobinaMirbahar/slothsre-napops/tree/main/slothsre_napops](https://github.com/RobinaMirbahar/slothsre-napops/tree/main/slothsre_napops)
+- **Reproducible Benchmark Script (`run_slothsre_demo.py`):** [https://github.com/RobinaMirbahar/slothsre-napops/blob/main/scripts/run_slothsre_demo.py](https://github.com/RobinaMirbahar/slothsre-napops/blob/main/scripts/run_slothsre_demo.py)
+- **Hacktoberfest Open-Source AI Challenge Week 3 (Slow and Steady):** [https://dev.to/challenges/hacktoberfest-week3-2026-10-19](https://dev.to/challenges/hacktoberfest-week3-2026-10-19)
+- **HF26 Challenge Hub (Best Use of Gemma & Sentry Categories):** [https://dev.to/challenges/hf26](https://dev.to/challenges/hf26)
+- **Google Gemma Open-Weights Models:** [https://cloud.google.com/vertex-ai/generative-ai/docs/open-models/use-gemma](https://cloud.google.com/vertex-ai/generative-ai/docs/open-models/use-gemma)
+- **Google Agent Development Kit (ADK) Documentation:** [https://google.github.io/adk-docs/](https://google.github.io/adk-docs/)
+- **Sentry AI Agent Monitoring & Tracing Documentation:** [https://docs.sentry.io/product/ai-monitoring/](https://docs.sentry.io/product/ai-monitoring/)
+- **Ollama Local Model Runner:** [https://ollama.com/](https://ollama.com/)
