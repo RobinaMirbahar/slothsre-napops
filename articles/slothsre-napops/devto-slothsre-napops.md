@@ -58,7 +58,7 @@ Running the demo executes the three-stage Gemma 4 + ADK overnight pipeline, reco
   [1-Click Approve API] POST /api/approve/CLUSTER-01-REDIS-POOL -> {'status': 'APPROVED_AND_APPLIED', 'cluster_id': 'CLUSTER-01-REDIS-POOL', 'service_name': 'billing-worker', 'executed_command': 'git apply .slothsre/patches/CLUSTER-01-REDIS-POOL.patch && gh pr create --fill'}
 ```
 
-To open the interactive browser dashboard on port 8095 and click the approval buttons directly:
+To open the interactive browser dashboard on port 8095 and click the approval buttons directly (where `/api/approve/{cluster_id}` validates `cluster_id` against a strict `^CLUSTER-\d{2}-[A-Z0-9-]+$` allowlist and verifies `patch.sandbox_pytest_passed == True` before applying):
 
 ```bash
 uvicorn slothsre_napops.app:app --host 127.0.0.1 --port 8095
@@ -80,7 +80,7 @@ SlothSRE is structured around three open-source pillars: **open-weights Gemma 4*
 
 ### 1. Enforcing the Two-Line Morning Contract with Pydantic v2
 
-To make sure the agent never replaces a 418-line log flood with a 400-word essay, `slothsre_napops/schemas.py` enforces a strict schema where each incident cluster must resolve to `line_1_what_broke`, `line_2_verified_fix`, a `one_click_command`, and a `VerifiedPatchArtifact`:
+To make sure the agent never replaces a 418-line log flood with a 400-word essay or hallucinates a passing test run, `slothsre_napops/schemas.py` enforces a strict schema where each incident cluster must resolve to `line_1_what_broke`, `line_2_verified_fix`, a `one_click_command`, and a `VerifiedPatchArtifact` cross-checked by `@model_validator(mode="after")`:
 
 ```python
 class TwoLineIncidentDigest(BaseModel):
@@ -104,13 +104,24 @@ class TwoLineIncidentDigest(BaseModel):
         ..., description="Single CLI or git command to apply/merge the verified fix."
     )
     patch: VerifiedPatchArtifact = Field(..., description="Attached sandbox-verified patch.")
+
+    @model_validator(mode="after")
+    def enforce_verdict_alignment(self) -> "TwoLineIncidentDigest":
+        """Prevents the LLM phrasing in Line 2 from contradicting the deterministic pytest verdict."""
+        if not self.patch.sandbox_pytest_passed:
+            lowered = self.line_2_verified_fix.lower()
+            if "passed" in lowered or "verified" in lowered:
+                raise ValueError(
+                    "LLM phrasing claims verification passed, but sandbox_pytest_passed is False."
+                )
+        return self
 ```
 
 ### 2. Orchestrating Gemma 4 Locally with Google ADK SequentialAgent
 
 In `slothsre_napops/agent.py`, three specialized `LlmAgent` stages share a local `ollama/gemma4:27b` endpoint through `LiteLlm`:
 
-1. **`NoiseFilterAgent`**: Ingests raw overnight events (62 Redis pool exhaustion errors totaling 310 lines and 34 Pydantic webhook errors totaling 108 lines) and groups them into 2 unique root-cause clusters.
+1. **`NoiseFilterAgent`**: Normalizes volatile memory addresses (`<HEX>`), request UUIDs (`<UUID>`), and ISO timestamps (`<TS>`) before computing a SHA-256 stack fingerprint, collapsing 96 raw overnight events (62 Redis pool exhaustion errors totaling 310 lines and 34 Pydantic webhook errors totaling 108 lines) into 2 unique root-cause clusters.
 2. **`SandboxPatchAgent`**: Generates a unified git diff for `services/billing_worker/redis_client.py` and `services/webhook_ingest/models.py`, then executes `pytest` in a local sandbox (`312.4 ms` and `184.6 ms`) before marking the fix ready.
 3. **`TwoLineBriefAgent`**: Formats the verified patches into the `SlothMorningReport` output schema.
 

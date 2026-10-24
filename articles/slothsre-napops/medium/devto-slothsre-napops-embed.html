@@ -248,7 +248,10 @@ endpoints (<code>GET /</code> and
   [FastAPI UI Verified] GET / HTTP 200 (7491 bytes)
   [1-Click Approve API] POST /api/approve/CLUSTER-01-REDIS-POOL -&gt; {&#39;status&#39;: &#39;APPROVED_AND_APPLIED&#39;, &#39;cluster_id&#39;: &#39;CLUSTER-01-REDIS-POOL&#39;, &#39;service_name&#39;: &#39;billing-worker&#39;, &#39;executed_command&#39;: &#39;git apply .slothsre/patches/CLUSTER-01-REDIS-POOL.patch &amp;&amp; gh pr create --fill&#39;}</code></pre>
 <p>To open the interactive browser dashboard on port 8095 and click the
-approval buttons directly:</p>
+approval buttons directly (where <code>/api/approve/{cluster_id}</code>
+validates <code>cluster_id</code> against a strict
+<code>^CLUSTER-\d{2}-[A-Z0-9-]+$</code> allowlist and verifies
+<code>patch.sandbox_pytest_passed == True</code> before applying):</p>
 <pre class="bash"><code>uvicorn slothsre_napops.app:app --host 127.0.0.1 --port 8095</code></pre>
 <h4 id="code">Code</h4>
 <p>The full open-source implementation is available on GitHub in the
@@ -283,11 +286,12 @@ background steps.</p>
 <h4 id="1-enforcing-the-two-line-morning-contract-with-pydantic-v2">1.
 Enforcing the Two-Line Morning Contract with Pydantic v2</h4>
 <p>To make sure the agent never replaces a 418-line log flood with a
-400-word essay, <code>slothsre_napops/schemas.py</code> enforces a
-strict schema where each incident cluster must resolve to
-<code>line_1_what_broke</code>, <code>line_2_verified_fix</code>, a
-<code>one_click_command</code>, and a
-<code>VerifiedPatchArtifact</code>:</p>
+400-word essay or hallucinates a passing test run,
+<code>slothsre_napops/schemas.py</code> enforces a strict schema where
+each incident cluster must resolve to <code>line_1_what_broke</code>,
+<code>line_2_verified_fix</code>, a <code>one_click_command</code>, and
+a <code>VerifiedPatchArtifact</code> cross-checked by
+<code>@model_validator(mode="after")</code>:</p>
 <pre class="python"><code>class TwoLineIncidentDigest(BaseModel):
     &quot;&quot;&quot;Strict 2-line morning summary enforcing the &#39;Slow and Steady&#39; anti-burnout contract.&quot;&quot;&quot;
  
@@ -308,7 +312,18 @@ strict schema where each incident cluster must resolve to
     one_click_command: str = Field(
         ..., description=&quot;Single CLI or git command to apply/merge the verified fix.&quot;
     )
-    patch: VerifiedPatchArtifact = Field(..., description=&quot;Attached sandbox-verified patch.&quot;)</code></pre>
+    patch: VerifiedPatchArtifact = Field(..., description=&quot;Attached sandbox-verified patch.&quot;)
+ 
+    @model_validator(mode=&quot;after&quot;)
+    def enforce_verdict_alignment(self) -&gt; &quot;TwoLineIncidentDigest&quot;:
+        &quot;&quot;&quot;Prevents the LLM phrasing in Line 2 from contradicting the deterministic pytest verdict.&quot;&quot;&quot;
+        if not self.patch.sandbox_pytest_passed:
+            lowered = self.line_2_verified_fix.lower()
+            if &quot;passed&quot; in lowered or &quot;verified&quot; in lowered:
+                raise ValueError(
+                    &quot;LLM phrasing claims verification passed, but sandbox_pytest_passed is False.&quot;
+                )
+        return self</code></pre>
 <h4
 id="2-orchestrating-gemma-4-locally-with-google-adk-sequentialagent">2.
 Orchestrating Gemma 4 Locally with Google ADK SequentialAgent</h4>
@@ -317,10 +332,13 @@ Orchestrating Gemma 4 Locally with Google ADK SequentialAgent</h4>
 <code>ollama/gemma4:27b</code> endpoint through
 <code>LiteLlm</code>:</p>
 <ol type="1">
-<li><strong><code>NoiseFilterAgent</code></strong>: Ingests raw
-overnight events (62 Redis pool exhaustion errors totaling 310 lines and
-34 Pydantic webhook errors totaling 108 lines) and groups them into 2
-unique root-cause clusters.</li>
+<li><strong><code>NoiseFilterAgent</code></strong>: Normalizes volatile
+memory addresses (<code>&lt;HEX&gt;</code>), request UUIDs
+(<code>&lt;UUID&gt;</code>), and ISO timestamps
+(<code>&lt;TS&gt;</code>) before computing a SHA-256 stack fingerprint,
+collapsing 96 raw overnight events (62 Redis pool exhaustion errors
+totaling 310 lines and 34 Pydantic webhook errors totaling 108 lines)
+into 2 unique root-cause clusters.</li>
 <li><strong><code>SandboxPatchAgent</code></strong>: Generates a unified
 git diff for <code>services/billing_worker/redis_client.py</code> and
 <code>services/webhook_ingest/models.py</code>, then executes
@@ -442,6 +460,35 @@ overnight agent step and sandbox tool call with <code>sentry-sdk</code>
 <code>gen_ai.usage.input_tokens</code>,
 <code>gen_ai.usage.output_tokens</code>) and surfaces the trace table
 directly in the morning dashboard.</li>
+</ul>
+<h4 id="official-documentation--resources">Official Documentation &amp;
+Resources</h4>
+<ul>
+<li><strong>SlothSRE (NapOps) Open-Source Repository on GitHub:</strong>
+<a
+href="https://github.com/RobinaMirbahar/slothsre-napops"><span>https://github.com/RobinaMirbahar/slothsre-napops</span></a></li>
+<li><strong>SlothSRE (NapOps) Core Package
+(<code>slothsre_napops/</code>):</strong> <a
+href="https://github.com/RobinaMirbahar/slothsre-napops/tree/main/slothsre_napops"><span>https://github.com/RobinaMirbahar/slothsre-napops/tree/main/slothsre_napops</span></a></li>
+<li><strong>Reproducible Benchmark Script
+(<code>run_slothsre_demo.py</code>):</strong> <a
+href="https://github.com/RobinaMirbahar/slothsre-napops/blob/main/scripts/run_slothsre_demo.py"><span>https://github.com/RobinaMirbahar/slothsre-napops/blob/main/scripts/run_slothsre_demo.py</span></a></li>
+<li><strong>Hacktoberfest Open-Source AI Challenge Week 3 (Slow and
+Steady):</strong> <a
+href="https://dev.to/challenges/hacktoberfest-week3-2026-10-19"><span>https://dev.to/challenges/hacktoberfest-week3-2026-10-19</span></a></li>
+<li><strong>HF26 Challenge Hub (Best Use of Gemma &amp; Sentry
+Categories):</strong> <a
+href="https://dev.to/challenges/hf26"><span>https://dev.to/challenges/hf26</span></a></li>
+<li><strong>Google Gemma Open-Weights Models:</strong> <a
+href="https://cloud.google.com/vertex-ai/generative-ai/docs/open-models/use-gemma"><span>https://cloud.google.com/vertex-ai/generative-ai/docs/open-models/use-gemma</span></a></li>
+<li><strong>Google Agent Development Kit (ADK) Documentation:</strong>
+<a
+href="https://google.github.io/adk-docs/"><span>https://google.github.io/adk-docs/</span></a></li>
+<li><strong>Sentry AI Agent Monitoring &amp; Tracing
+Documentation:</strong> <a
+href="https://docs.sentry.io/product/ai-monitoring/"><span>https://docs.sentry.io/product/ai-monitoring/</span></a></li>
+<li><strong>Ollama Local Model Runner:</strong> <a
+href="https://ollama.com/"><span>https://ollama.com/</span></a></li>
 </ul>
 </body>
 </html>
