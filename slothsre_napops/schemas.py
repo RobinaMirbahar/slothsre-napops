@@ -1,5 +1,5 @@
 from typing import List, Literal
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 
 class RawOvernightEvent(BaseModel):
@@ -49,6 +49,17 @@ class TwoLineIncidentDigest(BaseModel):
         ..., description="Single CLI or git command to apply/merge the verified fix."
     )
     patch: VerifiedPatchArtifact = Field(..., description="Attached sandbox-verified patch.")
+
+    @model_validator(mode="after")
+    def enforce_verdict_alignment(self) -> "TwoLineIncidentDigest":
+        """Prevents the LLM phrasing in Line 2 from contradicting the deterministic pytest verdict."""
+        if not self.patch.sandbox_pytest_passed:
+            lowered = self.line_2_verified_fix.lower()
+            if "passed" in lowered or "verified" in lowered:
+                raise ValueError(
+                    "LLM phrasing claims verification passed, but sandbox_pytest_passed is False."
+                )
+        return self
 
 
 class SentryAgentSpanRecord(BaseModel):

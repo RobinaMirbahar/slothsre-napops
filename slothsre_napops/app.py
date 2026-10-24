@@ -1,9 +1,12 @@
+import re
 from typing import Any, Dict
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 
 from slothsre_napops.agent import run_overnight_sloth_triage
 from slothsre_napops.schemas import SlothMorningReport
+
+CLUSTER_ID_ALLOWLIST_RE = re.compile(r"^CLUSTER-\d{2}-[A-Z0-9-]+$")
 
 app = FastAPI(
     title="SlothSRE (NapOps) — Overnight Gemma 4 + ADK Triage Dashboard",
@@ -22,11 +25,15 @@ async def get_morning_report() -> SlothMorningReport:
 @app.post("/api/approve/{cluster_id}")
 async def approve_cluster_patch(cluster_id: str) -> Dict[str, Any]:
     """Executes the 1-Click Morning Approval for a verified overnight patch."""
+    if not CLUSTER_ID_ALLOWLIST_RE.match(cluster_id):
+        raise HTTPException(status_code=400, detail="Invalid cluster_id format.")
     report = run_overnight_sloth_triage()
     matching = [d for d in report.digests if d.cluster_id == cluster_id]
     if not matching:
         raise HTTPException(status_code=404, detail=f"Cluster '{cluster_id}' not found")
     digest = matching[0]
+    if not digest.patch.sandbox_pytest_passed:
+        raise HTTPException(status_code=409, detail="Refusing to apply unverified patch.")
     APPROVED_CLUSTERS[cluster_id] = "MERGED"
     return {
         "status": "APPROVED_AND_APPLIED",
