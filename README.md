@@ -232,3 +232,16 @@ With SlothSRE running on open-weights Gemma 4, those 96 noisy alerts are already
   <img src="https://raw.githubusercontent.com/RobinaMirbahar/RobinaMirbahar/main/ProfileImages/GithubBanner.svg" alt="Robina Mirbahar Banner" width="100%" />
 </div>
 
+---
+
+## Star, Fork & Sponsor This Project
+
+[![Star on GitHub](https://img.shields.io/github/stars/RobinaMirbahar/slothsre-napops?style=for-the-badge&logo=github&label=Star)](https://github.com/RobinaMirbahar/slothsre-napops)
+[![Fork on GitHub](https://img.shields.io/github/forks/RobinaMirbahar/slothsre-napops?style=for-the-badge&logo=github&label=Fork)](https://github.com/RobinaMirbahar/slothsre-napops/fork)
+[![Sponsor RobinaMirbahar](https://img.shields.io/badge/Sponsor-%40RobinaMirbahar-ea4aaa?style=for-the-badge&logo=githubsponsors)](https://github.com/sponsors/RobinaMirbahar)
+
+If this project is helpful to your work:
+* **Star this Repository:** [**Star `RobinaMirbahar/slothsre-napops` on GitHub**](https://github.com/RobinaMirbahar/slothsre-napops) to bookmark it and help others discover it.
+* **Fork & Customize:** [**Fork `RobinaMirbahar/slothsre-napops`**](https://github.com/RobinaMirbahar/slothsre-napops/fork) to build and experiment with your own workflows.
+* **Sponsor on GitHub:** [**Sponsor `@RobinaMirbahar` on GitHub Sponsors (`github.com/sponsors/RobinaMirbahar`)**](https://github.com/sponsors/RobinaMirbahar) to support open-source AI, Google Cloud, and Gemini engineering projects!
+
