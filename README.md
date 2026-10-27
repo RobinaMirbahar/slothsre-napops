@@ -2,6 +2,52 @@
 
 ![SlothSRE Cover](articles/slothsre-napops/cover.1eb32148.jpg)
 
+![SRE_Agent](https://img.shields.io/badge/SRE_Agent-Google_ADK_&_Gemma_4-4285F4?style=for-the-badge&logo=google&logoColor=white)
+![Observability](https://img.shields.io/badge/Observability-OpenTelemetry_gen_ai.*-F5A800?style=for-the-badge&logo=opentelemetry&logoColor=white)
+![Monitoring](https://img.shields.io/badge/Monitoring-Sentry_AI_Tracing-362D59?style=for-the-badge&logo=sentry&logoColor=white)
+![Architect](https://img.shields.io/badge/Architect-Robina_Mirbahar-181717?style=for-the-badge&logo=github&logoColor=white)
+
+> **Author & Architect:** [Robina Mirbahar](https://github.com/RobinaMirbahar) (Google Developer Expert in Cloud & AI)  
+> **Focus:** Compressing Pager Storms into Verified Root-Cause Digests with OpenTelemetry `gen_ai.*` Spans & Sentry AI Monitoring
+
+---
+
+## 🎯 Why I Built SlothSRE (NapOps) — Overnight Gemma 4 & Google ADK Incident Digest Agent (Engineering Purpose & Real-World Value)
+
+### 1. 🦥 Ending 3 AM Alert Fatigue with Deterministic Incident Correlation
+When a single upstream database blip triggers 400 cascading alerts, on-call SREs waste critical minutes sifting through noise. I built SlothSRE ('NapOps') to correlate noisy alert storms into a single root-cause incident brief before the on-call engineer even opens their laptop.
+
+### 2. 🔭 Full OpenTelemetry `gen_ai.*` & Sentry AI Observability
+An SRE agent must itself be observable. I instrumented every Gemma 4 model call and ADK tool invocation with semantic `gen_ai.*` OpenTelemetry spans and Sentry AI monitoring to track token usage, latency, and tool errors.
+
+### 3. 🛡️ Read-Only Safe Triage by Default
+SlothSRE executes strictly read-only diagnostic tools (log correlation, recent deploy diffs, metric spikes) and outputs a structured remediation checklist for human approval.
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Alerts ["1. Overnight Alert Storm"]
+        A_In["400+ Cascading Pager / Cloud Monitoring Alerts"]
+    end
+    subgraph SlothSRE ["2. SlothSRE ADK + Gemma 4 Triage Pipeline"]
+        S_Dedup["Alert Fingerprinting & Time-Window Clustering"]
+        S_Tools["Read-Only Diagnostic Tools (Deploys, Logs, Metrics)"]
+        S_Gemma["Gemma 4 Root-Cause Synthesizer"]
+    end
+    subgraph Obs ["3. Agent Observability & Output"]
+        O_OTel["OpenTelemetry gen_ai.* Spans & Sentry AI"]
+        O_Brief["Verified Morning Root-Cause & Rollback Brief"]
+    end
+    A_In --> S_Dedup --> S_Tools --> S_Gemma
+    S_Tools & S_Gemma --> O_OTel
+    S_Gemma --> O_Brief
+```
+
+---
+
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 3: Slow and Steady](https://dev.to/challenges/hacktoberfest-week3-2026-10-19)*
 
 ## What I Built
