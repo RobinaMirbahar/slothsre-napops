@@ -45,16 +45,6 @@ flowchart TD
     A_In --> S_Dedup --> S_Tools --> S_Gemma
     S_Tools & S_Gemma --> O_OTel
     S_Gemma --> O_Brief
-    style Alerts fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#831843
-    style A_In fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
-    style SlothSRE fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
-    style S_Dedup fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,color:#581c87
-    style S_Tools fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#831843
-    style Tools fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
-    style S_Gemma fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
-    style Obs fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,color:#581c87
-    style O_OTel fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#831843
-    style O_Brief fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
 ```
 
 ---
