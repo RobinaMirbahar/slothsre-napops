@@ -7,7 +7,8 @@
 ![Monitoring](https://img.shields.io/badge/Monitoring-Sentry_AI_Tracing-362D59?style=for-the-badge&logo=sentry&logoColor=white)
 ![Architect](https://img.shields.io/badge/Architect-Robina_Mirbahar-181717?style=for-the-badge&logo=github&logoColor=white)
 
-> **Author & Architect:** [Robina Mirbahar](https://github.com/RobinaMirbahar) (Google Developer Expert in Cloud & AI)  
+> **Author & Architect:** [Robina Mirbahar](https://github.com/RobinaMirbahar) ([Google Developer Expert in Cloud & AI](https://developers.google.com/profile/u/106918534005910641104?utm_campaign=deveco_gdemembers&utm_source=deveco) · Google Cloud Champion Innovator · Co-Author of [*AI Engineering*](https://www.amazon.com/dp/B0GWCZWCF4))  
+> 📚 **Companion Publications:** [DEV.to (@gde) Featured Article](https://dev.to/gde/slothsre-napops-an-overnight-gemma-4-adk-agent-that-compresses-418-lines-of-3-am-alerts-into-a-1pk6) · [Medium Article](https://medium.com/@robinamirbahar/slothsre-napops-an-overnight-gemma-4-adk-agent-that-compresses-418-lines-of-3-am-alerts-into-a-c7656732c736)  
 > **Focus:** Compressing Pager Storms into Verified Root-Cause Digests with OpenTelemetry `gen_ai.*` Spans & Sentry AI Monitoring
 
 ---
@@ -44,6 +45,16 @@ flowchart TD
     A_In --> S_Dedup --> S_Tools --> S_Gemma
     S_Tools & S_Gemma --> O_OTel
     S_Gemma --> O_Brief
+    style Alerts fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#831843
+    style A_In fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+    style SlothSRE fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+    style S_Dedup fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,color:#581c87
+    style S_Tools fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#831843
+    style Tools fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+    style S_Gemma fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+    style Obs fill:#f3e8ff,stroke:#9333ea,stroke-width:2px,color:#581c87
+    style O_OTel fill:#fce7f3,stroke:#db2777,stroke-width:2px,color:#831843
+    style O_Brief fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
 ```
 
 ---
@@ -273,7 +284,3 @@ With SlothSRE running on open-weights Gemma 4, those 96 noisy alerts are already
 | **[a2a-mcp-mesh-cloudrun](https://github.com/RobinaMirbahar/a2a-mcp-mesh-cloudrun)** | Agent-to-Agent (A2A) & Multi-MCP Mesh on Cloud Run with Gemma 4, Google ADK, Spanner Graph & AlloyDB | ![Stars](https://img.shields.io/github/stars/RobinaMirbahar/a2a-mcp-mesh-cloudrun?style=flat-square&color=EA4335) ![Last Commit](https://img.shields.io/github/last-commit/RobinaMirbahar/a2a-mcp-mesh-cloudrun?style=flat-square) |
 | **[cloudguard-gemma-agent](https://github.com/RobinaMirbahar/cloudguard-gemma-agent)** | 6-Part Production Gemma Enterprise Agent Series (ADK, Cloud Run L4 GPU, Firestore, Model Armor, Vertex AI QLoRA) | ![Stars](https://img.shields.io/github/stars/RobinaMirbahar/cloudguard-gemma-agent?style=flat-square&color=4285F4) ![Last Commit](https://img.shields.io/github/last-commit/RobinaMirbahar/cloudguard-gemma-agent?style=flat-square) |
 | **[cozy-ai-agent-cafe-game](https://github.com/RobinaMirbahar/cozy-ai-agent-cafe-game)** | Prompt Paws: 60 FPS Cozy AI Agent Bakery Simulation Game teaching RAG, Guardrails, Context Caching & Multi-Agent Loops | ![Stars](https://img.shields.io/github/stars/RobinaMirbahar/cozy-ai-agent-cafe-game?style=flat-square&color=7928CA) ![Last Commit](https://img.shields.io/github/last-commit/RobinaMirbahar/cozy-ai-agent-cafe-game?style=flat-square) |
-
-<div align="center">
-  <img src="https://raw.githubusercontent.com/RobinaMirbahar/RobinaMirbahar/main/ProfileImages/GithubBanner.svg" alt="Robina Mirbahar Banner" width="100%" />
-</div>
